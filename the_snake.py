@@ -68,12 +68,6 @@ class GameObject:
         pass
 
 
-def randomize_position() -> tuple[int, int]:
-    """Генерирует случайные координаты."""
-    return (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
-
-
 class Apple(GameObject):
     """
     Класс яблока.
@@ -95,7 +89,7 @@ class Apple(GameObject):
 
     def __init__(self) -> None:
         """Инициализирует объект."""
-        self.position = randomize_position()
+        self.position = self.randomize_position()
         self.body_color = Apple.body_color
 
     def draw(self) -> None:
@@ -103,6 +97,12 @@ class Apple(GameObject):
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+
+    @staticmethod
+    def randomize_position() -> tuple[int, int]:
+        """Генерирует случайные координаты."""
+        return (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
 
 
 class Snake(GameObject):
@@ -244,8 +244,6 @@ def main():
     snake = Snake()
     apple = Apple()
     status = True
-    print(apple.position)
-
     while status:
         clock.tick(SPEED)
         handle_keys(snake)
@@ -253,9 +251,9 @@ def main():
         snake.move()
         if snake.positions[0] == apple.position:
             snake.length += 1
-            apple.position = randomize_position()
+            apple.position = apple.randomize_position()
             while apple.position in snake.positions:
-                apple.position = randomize_position()
+                apple.position = apple.randomize_position()
         else:
             snake.last = snake.positions.pop(-1)
         snake.reset()
