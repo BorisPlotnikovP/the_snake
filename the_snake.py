@@ -99,10 +99,9 @@ class Apple(GameObject):
     def __init__(self,
                  body_color: COLOR = APPLE_COLOR,
                  position: POSITION = CENTRAL_CELL,
-                 unavailable_positions: POSITIONS | None = None) -> None:
+                 unavailable_positions: POSITIONS = [CENTRAL_CELL]) -> None:
         """Инициализирует объект."""
         super().__init__(position=position, body_color=body_color)
-        unavailable_positions = unavailable_positions or [CENTRAL_CELL]
         self.randomize_position(unavailable_positions)
 
     def draw(self) -> None:
