@@ -119,7 +119,6 @@ class Apple(GameObject):
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
-
 class Snake(GameObject):
     """
     Класс змейки.
