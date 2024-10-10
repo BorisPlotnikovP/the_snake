@@ -1,4 +1,5 @@
 from random import randint
+from typing import Optional
 
 import pygame as pg
 
@@ -99,11 +100,17 @@ class Apple(GameObject):
     def __init__(self,
                  body_color: COLOR = APPLE_COLOR,
                  position: POSITION = CENTRAL_CELL,
-                 unavailable_positions: POSITIONS | None = None) -> None:
+                 unavailable_positions: Optional[POSITIONS] = None) -> None:
         """Инициализирует объект."""
         super().__init__(position=position, body_color=body_color)
         unavailable_positions = None or [CENTRAL_CELL]
         self.randomize_position(unavailable_positions)
+
+    def randomize_position(self, unavailable_positions: POSITIONS):
+        """Генерирует случайную позицию для яблока."""
+        while self.position in unavailable_positions:
+            self.position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                             randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
 
     def draw(self) -> None:
         """Отрисовывает объект на игровом поле."""
@@ -111,11 +118,6 @@ class Apple(GameObject):
         pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
-    def randomize_position(self, unavailable_positions: POSITIONS):
-        """Генерирует случайную позицию для яблока."""
-        while self.position in unavailable_positions:
-            self.position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-                             randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
 
 
 class Snake(GameObject):
@@ -225,7 +227,7 @@ def main():
     """Основной цикл игры."""
     pg.init()
     snake = Snake()
-    apple = Apple()
+    apple = Apple(unavailable_positions=[CENTRAL_CELL])
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
