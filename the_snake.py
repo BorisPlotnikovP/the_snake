@@ -103,8 +103,7 @@ class Apple(GameObject):
                  unavailable_positions: Optional[POSITIONS] = None) -> None:
         """Инициализирует объект."""
         super().__init__(position=position, body_color=body_color)
-        unavailable_positions = None or [CENTRAL_CELL]
-        self.randomize_position(unavailable_positions)
+        self.randomize_position(unavailable_positions or [CENTRAL_CELL])
 
     def randomize_position(self, unavailable_positions: POSITIONS):
         """Генерирует случайную позицию для яблока."""
